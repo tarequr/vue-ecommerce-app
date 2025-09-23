@@ -6,7 +6,6 @@ const registerController = async(req, res) => {
     try {
         const { name, email, password, phone, address } = req.body;
 
-        /** Validation **/
         if (!name || !email || !password || !phone || !address) {
             return res.status(500).send({ 
                 success: false,
@@ -14,8 +13,8 @@ const registerController = async(req, res) => {
             });
         }
 
-        /** Check User **/
         const existing = await userModel.findOne({email});
+        
         if (existing) {
             return res.status(500).send({ 
                 success: false,
