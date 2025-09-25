@@ -1,9 +1,13 @@
-const userModel = require("../models/userModel");
+const User = require("../models/User");
 const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
 
 const registerController = async(req, res) => {
     try {
+        if (!req.body) {
+            return res.status(400).json({ success: false, message: "Request body is missing" });
+        }
+        
         const { name, email, password, phone, address } = req.body;
 
         if (!name || !email || !password || !phone || !address) {
@@ -13,7 +17,7 @@ const registerController = async(req, res) => {
             });
         }
 
-        const existing = await userModel.findOne({email});
+        const existing = await User.findOne({email});
         
         if (existing) {
             return res.status(500).send({ 
@@ -27,7 +31,7 @@ const registerController = async(req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         /** Create new user **/
-        const user = await userModel.create({ name, email, password: hashedPassword, phone, address });
+        const user = await User.create({ name, email, password: hashedPassword, phone, address });
         res.status(201).send({
             success: true,
             message: 'User created successfully',
@@ -57,7 +61,7 @@ const loginController = async(req, res) => {
         }
 
         /** Check User **/
-        const user = await userModel.findOne({email});
+        const user = await User.findOne({email});
         if (!user) {
             return res.status(404).send({ 
                 success: false,
