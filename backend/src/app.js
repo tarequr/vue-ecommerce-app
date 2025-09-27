@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api', authRoutes);
-// app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 // Default route
 app.get('/', (req, res) => {
