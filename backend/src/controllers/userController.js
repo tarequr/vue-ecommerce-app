@@ -1,12 +1,20 @@
-const userService = require('../services/userService');
+// const User = require("../models/User");
 
-exports.getUsers = (req, res) => {
-    const users = userService.getAllUsers();
-    res.json(users);
-};
+// exports.index = async(req, res) => {
+//     try {
+//         const users = await User.find();
+//         res.status(201).send({
+//             success: true,
+//             message: 'User list fetched successfully',
+//             users
+//         });
 
-exports.createUser = (req, res) => {
-    const { name, email } = req.body;
-    const newUser = userService.addUser(name, email);
-    res.status(201).json(newUser);
-};
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send({
+//             success: false,
+//             message: `Error fetching user list: ${error.message}`,
+//             error
+//         });
+//     }
+// }
