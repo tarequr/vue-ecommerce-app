@@ -17,5 +17,6 @@ const allUsersController = async(req, res) => {
             error
         });
     }
+}
 
 module.exports = { allUsersController }

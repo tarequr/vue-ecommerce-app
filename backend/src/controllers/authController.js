@@ -32,10 +32,11 @@ const registerController = async(req, res) => {
 
         /** Create new user **/
         const user = await User.create({ name, email, password: hashedPassword, phone, address });
+        const userWithoutPassword = { ...user._doc, password: undefined };
         res.status(201).send({
             success: true,
             message: 'User created successfully',
-            user
+            user: userWithoutPassword
         });
 
     } catch (error) {
