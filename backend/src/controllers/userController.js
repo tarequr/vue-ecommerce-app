@@ -2,10 +2,11 @@ const User = require("../models/User");
 
 const allUsersController = async(req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find({}, { password: 0 });
         res.status(201).send({
             success: true,
             message: 'User list fetched successfully',
+            count: users.length,
             users
         });
 
@@ -19,11 +20,18 @@ const allUsersController = async(req, res) => {
     }
 }
 
-
-const singleUsersController = async(req, res) => {
+const singleUserController = async(req, res) => {
     try {
         const userId = req.params.id;
         const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
         res.status(201).send({
             success: true,
             message: 'User fetched successfully',
@@ -40,4 +48,32 @@ const singleUsersController = async(req, res) => {
     }
 }
 
-module.exports = { allUsersController, singleUsersController }
+const deleteUserController = async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findByIdAndDelete(userId);
+
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.status(201).send({
+            success: true,
+            message: 'User deleted successfully',
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: `Error deleting user: ${error.message}`,
+            error
+        });
+    }
+}
+
+module.exports = { allUsersController, singleUserController, deleteUserController }
