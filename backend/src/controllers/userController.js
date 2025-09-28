@@ -19,4 +19,25 @@ const allUsersController = async(req, res) => {
     }
 }
 
-module.exports = { allUsersController }
+
+const singleUsersController = async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+        res.status(201).send({
+            success: true,
+            message: 'User fetched successfully',
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: `Error fetching user: ${error.message}`,
+            error
+        });
+    }
+}
+
+module.exports = { allUsersController, singleUsersController }
