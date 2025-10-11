@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 const app = express();
 
 // Middleware
@@ -11,6 +12,7 @@ app.use(express.json());
 // Routes
 app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // Default route
 app.get('/', (req, res) => {
