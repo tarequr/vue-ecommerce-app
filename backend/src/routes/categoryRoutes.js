@@ -1,9 +1,11 @@
 const express = require('express');
-const { allUsersController, singleUserController, deleteUserController } = require('../controllers/userController');
+const { allCategories, storeCategory, singleCategory, updateCategory, deleteCategory } = require('../controllers/categoryController');
 const router = express.Router();
 
-router.get('/', allUsersController);
-router.put('/:id', singleUserController);
-router.delete('/:id', deleteUserController);
+router.get('/', allCategories);
+router.post('/:id', storeCategory);
+router.get('/:id', singleCategory);
+router.put('/:id', updateCategory);
+router.delete('/:id', deleteCategory);
 
 module.exports = router;
