@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-const allUsersController = async(req, res) => {
+const allUsers = async(req, res) => {
     try {
         const users = await User.find({}, { password: 0 });
         res.status(201).send({
@@ -20,7 +20,28 @@ const allUsersController = async(req, res) => {
     }
 }
 
-const singleUserController = async(req, res) => {
+const storeUser = async(req, res) => {
+    try {
+        const { name, email } = req.body;
+        const user = await User.create({ name, email });
+
+        res.status(201).send({
+            success: true,
+            message: 'User created successfully',
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: `Error creating user: ${error.message}`,
+            error
+        });
+    }
+}
+
+const singleUser = async(req, res) => {
     try {
         const userId = req.params.id;
         const user = await User.findById(userId);
@@ -48,7 +69,36 @@ const singleUserController = async(req, res) => {
     }
 }
 
-const deleteUserController = async(req, res) => {
+const updateUser = async(req, res) => {
+    try {
+        const userId = req.params.id;
+        const { name, email } = req.body;
+        const user = await User.findByIdAndUpdate(userId, { name, email }, { new: true });
+
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.status(201).send({
+            success: true,
+            message: 'User updated successfully',
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: `Error updating user: ${error.message}`,
+            error
+        });
+    }
+}
+
+const deleteUser = async(req, res) => {
     try {
         const userId = req.params.id;
         const user = await User.findByIdAndDelete(userId);
@@ -76,4 +126,4 @@ const deleteUserController = async(req, res) => {
     }
 }
 
-module.exports = { allUsersController, singleUserController, deleteUserController }
+module.exports = { allUsers, storeUser, updateUser, singleUser, deleteUser }
